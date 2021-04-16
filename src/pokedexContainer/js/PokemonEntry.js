@@ -2,18 +2,19 @@ import React, { useEffect, useState } from "react";
 
 function PokemonEntry(props) {
 
-    //Gets pokemon's name
-    let name = props.data.name;
-    let nameCapitalized = name.charAt(0).toUpperCase() + name.slice(1);
+    function capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 
     const [pokemonData, setPokemonData] = useState({
-        "name": nameCapitalized, 
-        "height": 0,
-        "weight": 0,
-        "types": null,
-        "artworkLink": "", 
-        "iconLink": "",
-
+        "id": null,
+        "name": capitalizeFirstLetter(props.data.name), 
+        "height": null,
+        "weight": null,
+        "artworkLink": null, 
+        "iconLink": null,
+        "firstType": null,
+        "secondType": null,
     });
 
     useEffect(() => {
@@ -24,15 +25,31 @@ function PokemonEntry(props) {
         let promise = getPromise(URL);
     
         promise.then(result => {
-          console.log(JSON.parse(result));
           return JSON.parse(result);
         })
         .then(result => {
-            setPokemonData({
-                ...pokemonData, 
-                "height": result.height,
-                "weight": result.weight
-            });
+            if (result.types.length > 1) {
+                setPokemonData({
+                    ...pokemonData, 
+                    "id": result.id,
+                    "height": result.height,
+                    "weight": result.weight, 
+                    "artworkLink": "https://picsum.photos/475/475" /* result.sprites.other.official-artwork.front-default */, 
+                    "iconLink": "https://picsum.photos/68/56" /* result.sprites.versions.generation-vii.icons.front-default */,
+                    "firstType": capitalizeFirstLetter(result.types[0].type.name),
+                    "secondType": capitalizeFirstLetter(result.types[1].type.name)
+                });
+            } else {
+                setPokemonData({
+                    ...pokemonData, 
+                    "id": result.id, 
+                    "height": result.height,
+                    "weight": result.weight, 
+                    "artworkLink": "https://picsum.photos/475/475" /* result.sprites.other.official-artwork.front-default */, 
+                    "iconLink": "https://picsum.photos/68/56" /* result.sprites.versions.generation-vii.icons.front-default */,
+                    "firstType": capitalizeFirstLetter(result.types[0].type.name)
+                });
+            }
         })
         .catch(error => {
           console.log(error);
@@ -57,9 +74,13 @@ function PokemonEntry(props) {
 
     return (
         <>
-            <p>{pokemonData.name}</p>
-            <p>{pokemonData.height}</p>
-            <p>{pokemonData.weight}</p>
+            {pokemonData.id === null ? <p>Loading...</p> : <p>{pokemonData.id}</p>}
+            {pokemonData.name === null ? <p>Loading...</p> : <p>{pokemonData.name}</p>}
+            {pokemonData.height === null ? <p>Loading...</p> : <p>{pokemonData.height}</p>}
+            {pokemonData.weight === null ? <p>Loading...</p> : <p>{pokemonData.weight}</p>}
+            {pokemonData.firstType === null ? <p>Loading...</p> : <p>{pokemonData.firstType}</p>}
+            {pokemonData.secondType === null ? <br /> : <p>{pokemonData.secondType}</p>}
+            {pokemonData.iconLink === null ? <p>Loading...</p> : <img src={pokemonData.iconLink} alt={"Picture of " + pokemonData.name} width="68" height="56" />}
         </>
     );
 }
