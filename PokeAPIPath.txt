@@ -1,0 +1,21 @@
+Root
+    id
+    name
+    height
+    weight
+    sprites
+        other
+            official-artwork
+                front-default (this artwork will be used for box popup)
+        versions
+            generation-vii
+                icons
+                    front-default (this icon will be used for the clickable part)
+    types
+        0
+            type
+                name
+        1 (if has two types)
+            type
+                name
+    weight
