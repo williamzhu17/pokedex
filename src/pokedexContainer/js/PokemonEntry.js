@@ -1,4 +1,9 @@
 import React, { useEffect, useState } from "react";
+import "../css/PokemonEntry.css";
+import Modal from "react-bootstrap/Modal";
+import { getPromise } from "../../getPromise";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 function PokemonEntry(props) {
 
@@ -14,8 +19,10 @@ function PokemonEntry(props) {
         "artworkLink": null, 
         "iconLink": null,
         "firstType": null,
-        "secondType": null,
+        "secondType": null, 
     });
+
+    const [clicked, setClicked] = useState(false);
 
     useEffect(() => {
         makeAPICall(props.data.url);
@@ -56,31 +63,44 @@ function PokemonEntry(props) {
         });
       }
 
-    function getPromise(URL) {
-        let promise = new Promise(function (resolve, reject) {
-          let req = new XMLHttpRequest();
-          req.open("GET", URL);
-          req.onload = function () {
-            if (req.status === 200) {
-              resolve(req.response);
-            } else {
-              reject("There is an Error!");
-            }
-          };
-          req.send();
-        });
-        return promise;
+      function handleClick() {
+          setClicked(true);
+      }
+
+      function handleClose() {
+          setClicked(false);
       }
 
     return (
         <>
-            {pokemonData.id === null ? <p>Loading...</p> : <p>{pokemonData.id}</p>}
-            {pokemonData.name === null ? <p>Loading...</p> : <p>{pokemonData.name}</p>}
-            {pokemonData.height === null ? <p>Loading...</p> : <p>{pokemonData.height}</p>}
-            {pokemonData.weight === null ? <p>Loading...</p> : <p>{pokemonData.weight}</p>}
-            {pokemonData.firstType === null ? <p>Loading...</p> : <p>{pokemonData.firstType}</p>}
-            {pokemonData.secondType === null ? <br /> : <p>{pokemonData.secondType}</p>}
-            {pokemonData.iconLink === null ? <p>Loading...</p> : <img src={pokemonData.iconLink} alt={"Picture of " + pokemonData.name} width="68" height="56" />}
+            <div onClick={handleClick} >
+                {pokemonData.id === null ? <p>Loading...</p> : <p className="pokemonId">{pokemonData.id}</p>}
+                {pokemonData.name === null ? <p>Loading...</p> : <p>{pokemonData.name}</p>}
+                {pokemonData.iconLink === null ? <p>Loading...</p> : <img src={pokemonData.iconLink} alt={"Picture of " + pokemonData.name} width="68" height="56" />}
+            </div>
+
+            <Modal show={clicked} onHide={handleClose} size="lg" centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>{pokemonData.name}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Row>
+                        <Col>
+                            {
+                                pokemonData.artworkLink === null ? 
+                                <p>Loading...</p> : 
+                                <img src={pokemonData.artworkLink} alt={"Picture of " + pokemonData.name} width="475" height="475" className="pokemonArtwork"/>
+                            }
+                        </Col>
+                        <Col>
+                            {pokemonData.height === null ? <p>Loading...</p> : <p className="pokemonInformation">Height: {pokemonData.height}</p>}
+                            {pokemonData.weight === null ? <p>Loading...</p> : <p className="pokemonInformation">Weight: {pokemonData.weight}</p>}
+                            {pokemonData.firstType === null ? <p>Loading...</p> : <p className="pokemonInformation">Type 1: {pokemonData.firstType}</p>}
+                            {pokemonData.secondType === null ? <br /> : <p className="pokemonInformation">Type 2: {pokemonData.secondType}</p>}
+                        </Col>
+                    </Row>
+                </Modal.Body>
+            </Modal>
         </>
     );
 }

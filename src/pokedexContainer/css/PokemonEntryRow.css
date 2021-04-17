@@ -1,0 +1,13 @@
+.entryCol {
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: 20px;
+    background-color: lightgray;
+}
+
+.entryRow {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 3%;
+    margin-bottom: 5%;
+}
