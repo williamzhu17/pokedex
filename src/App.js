@@ -9,6 +9,9 @@ function App() {
 
   const [pokemonData, setPokemonData] = useState(null);
 
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState();
+
   useEffect(() => {
     pokemonInformationAPICall("https://pokeapi.co/api/v2/pokemon?limit=150");
   }, []);
@@ -19,16 +22,18 @@ function App() {
 
     promise.then(result => {
       setPokemonData(JSON.parse(result));
+      setLoaded(true);
     })
     .catch(error => {
       console.log(error);
+      setError(error);
     });
   }
 
   return (
     <div className="App">
       <NavigationBar />
-      {pokemonData === null ? <p>Loading...</p> : <PokedexContainer data={pokemonData} />}
+      {loaded === true ? <PokedexContainer data={pokemonData} /> : <p>Loading...</p>}
     </div>
   );
 }
