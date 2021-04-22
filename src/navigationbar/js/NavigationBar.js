@@ -5,24 +5,69 @@ import Button from "react-bootstrap/Button";
 
 function NavigationBar() {
 
-    const [searching, setSearching] = useState(false);
+    const [searchParameters, setSearchParameters] = useState({
+        "searching": false,
+        "searchBoxOpen": false,
+        "searchType": "name", 
+        "searchInput": "",
+    });
 
-    function handleSearch() {
-        setSearching(true);
+    function openSearchBox() {
+        setSearchParameters({
+            ...searchParameters, 
+            "searchBoxOpen": true,
+        });
     }
 
-    function handleClose() {
-        setSearching(false);
+    function closeSearchBox() {
+        setSearchParameters({
+            ...searchParameters, 
+            "searchBoxOpen": false,
+        });
+    }
+
+    function handleChange(event) {
+        if (event.target.type === "text") {
+            setSearchParameters({
+                ...searchParameters, 
+                "searchInput": event.target.value,
+            });
+        }
+
+        if (event.target.type === "radio") {
+            setSearchParameters({
+                ...searchParameters, 
+                "searchType": event.target.value,
+            });
+        }
+    }
+
+    function onSubmit() {
+        setSearchParameters({
+            ...searchParameters, 
+            "searching": true,
+            "searchBoxOpen": false, 
+        });
+    }
+
+    function turnOffSearching() {
+        setSearchParameters({
+            ...searchParameters, 
+            "searching": false,
+        });
     }
 
     return (
         <>
             <Navbar bg="light" variant="light" className="justify-content-between">
                 <Navbar.Brand>Pokedex</Navbar.Brand>
-                <Button onClick={handleSearch}>Search</Button>
+
+                {searchParameters.searching === false ? 
+                    <Button onClick={openSearchBox}>Search</Button> : 
+                    <Button onClick={turnOffSearching} variant="danger">Stop Search</Button>}
             </Navbar>
 
-            <Search handleClose={handleClose} searching={searching} />
+            <Search closeSearchBox={closeSearchBox} handleChange={handleChange} searchParameters={searchParameters} onSubmit={onSubmit} />
         </>
     );
 }

@@ -4,6 +4,7 @@ import NavigationBar from "./navigationbar/js/NavigationBar.js";
 import PokedexContainer from "./pokedexContainer/js/PokedexContainer.js";
 import { getPromise } from "./getPromise";
 import React, {useEffect, useState} from "react";
+import Spinner from "react-bootstrap/Spinner";
 
 function App() {
 
@@ -13,7 +14,7 @@ function App() {
   const [error, setError] = useState();
 
   useEffect(() => {
-    pokemonInformationAPICall("https://pokeapi.co/api/v2/pokemon?limit=150");
+    pokemonInformationAPICall("https://pokeapi.co/api/v2/pokemon?limit=151");
   }, []);
 
   //Gets links to all of the different pokemon and stores them into the pokemonData
@@ -33,7 +34,12 @@ function App() {
   return (
     <div className="App">
       <NavigationBar />
-      {loaded === true ? <PokedexContainer data={pokemonData} /> : <p>Loading...</p>}
+      {loaded === true ? 
+        <PokedexContainer data={pokemonData} colPerRow={6} /> : 
+        <Spinner animation="border" role="status">
+          <span className="sr-only">Loading...</span>
+        </Spinner>
+      }
     </div>
   );
 }

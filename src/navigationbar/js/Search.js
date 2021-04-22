@@ -7,33 +7,11 @@ import Col from "react-bootstrap/Col";
 import { capitalizeFirstLetter } from "../../capitalizeFirstLetter.js";
 
 function Search(props) {
-
-    const [searchParameters, setSearchParameters] = useState({
-        "searchType": "name", 
-        "searchInput": "",
-    });
-
-    function handleChange(event) {
-        if (event.target.type === "text") {
-            setSearchParameters({
-                ...searchParameters, 
-                "searchInput": event.target.value,
-            });
-        }
-
-        if (event.target.type === "radio") {
-            setSearchParameters({
-                ...searchParameters, 
-                "searchType": event.target.value,
-            });
-        }
-    }
-
     return(
         <>
-            <Modal show={props.searching} onHide={props.handleClose}>
+            <Modal show={props.searchParameters.searchBoxOpen} onHide={props.closeSearchBox}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Search {capitalizeFirstLetter(searchParameters.searchType)}</Modal.Title>
+                    <Modal.Title>Search {capitalizeFirstLetter(props.searchParameters.searchType)}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -44,12 +22,12 @@ function Search(props) {
                             <Col sm={8}>
                                 <Form.Control 
                                     type="text" 
-                                    value={searchParameters.searchInput} 
-                                    onChange={handleChange} 
+                                    value={props.searchParameters.searchInput} 
+                                    onChange={props.handleChange} 
                                 />
                             </Col>
                         </Form.Group>
-                        <Form.Group controlId="searchOptions" as={Row} onChange={handleChange}>
+                        <Form.Group controlId="searchOptions" as={Row} onChange={props.handleChange}>
                             <Col sm={4}>
                                 <Form.Label>Search by...</Form.Label>
                             </Col>
@@ -61,7 +39,7 @@ function Search(props) {
                                     name="searchOptionRadio" 
                                     id="nameSearchOption" 
                                     value="name" 
-                                    checked={searchParameters.searchType === "name"} 
+                                    checked={props.searchParameters.searchType === "name"} 
                                 />
                                 <Form.Check 
                                     type="radio" 
@@ -70,13 +48,13 @@ function Search(props) {
                                     name="searchOptionRadio" 
                                     id="numberSearchOption" 
                                     value="number"
-                                    checked={searchParameters.searchType === "number"}
+                                    checked={props.searchParameters.searchType === "number"}
                                 />
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
                             <Col sm={{span: 8, offset: 4}}>
-                                <Button>Search</Button>
+                                <Button onClick={props.onSubmit}>Search</Button>
                             </Col>
                         </Form.Group>
                     </Form>

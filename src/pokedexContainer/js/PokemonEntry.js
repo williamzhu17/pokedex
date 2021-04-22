@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "../css/PokemonEntry.css";
 import { getPromise } from "../../getPromise";
+import { capitalizeFirstLetter } from "../../capitalizeFirstLetter.js";
 import PokemonEntryBox from "./PokemonEntryBox.js";
 import Card from "react-bootstrap/Card";
-import { capitalizeFirstLetter } from "../../capitalizeFirstLetter.js";
+import Spinner from "react-bootstrap/Spinner";
 
 function PokemonEntry(props) {
 
@@ -38,10 +39,12 @@ function PokemonEntry(props) {
           return JSON.parse(result);
         })
         .then(result => {
-            let secondType;
+            let secondType = null;
+
             if (result.types.length > 1) {
                 secondType = capitalizeFirstLetter(result.types[1].type.name);
             }
+
             setPokemonData({
                 ...pokemonData, 
                 "id": result.id,
@@ -50,7 +53,7 @@ function PokemonEntry(props) {
                 "artworkLink": result.sprites.other["official-artwork"]["front_default"], 
                 "iconLink": result.sprites.versions["generation-vii"].icons["front_default"],
                 "firstType": capitalizeFirstLetter(result.types[0].type.name),
-                "secondType": secondType
+                "secondType": secondType,
             });
             setLoaded(true);
         })
@@ -82,7 +85,9 @@ function PokemonEntry(props) {
                         </Card.Title>
                     </Card.Body>
                 </Card> : 
-                <span>Loading...</span>
+                <Spinner animation="grow" role="status">
+                    <span className="sr-only">Loading...</span>
+                </Spinner>
             }
 
             <PokemonEntryBox clicked={clicked} handleClose={handleClose} data={pokemonData} />

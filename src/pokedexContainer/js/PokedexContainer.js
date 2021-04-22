@@ -10,14 +10,18 @@ function PokedexContainer(props) {
         for (let i = 0; i < rowNumber; i ++) {
             let startRange = i * colPerRow;
             let endRange = i * colPerRow + colPerRow;
+
+            if (endRange > props.data.results.length) {
+                endRange = props.data.results.length;
+            }
     
             rows.push(
-                <PokemonEntryRow key={i} data={props.data.results.slice(startRange, endRange)} />
+                <PokemonEntryRow key={i} data={props.data.results.slice(startRange, endRange)} colPerRow={props.colPerRow} />
             )
         }
     }
 
-    createRows(6);
+    createRows(props.colPerRow);
     
     return (
         <>

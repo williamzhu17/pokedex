@@ -19,7 +19,12 @@ function PokemonEntryBox(props) {
                         <p className="pokemonInformation">Height: {props.data.height}</p>
                         <p className="pokemonInformation">Weight: {props.data.weight}</p>
                         <p className="pokemonInformation">Type 1: {props.data.firstType}</p>
-                        <p className="pokemonInformation">Type 2: {props.data.secondType}</p>
+                        {props.data.secondType === null ? 
+                            null : 
+                            <p className="pokemonInformation">Type 2: {props.data.secondType}</p>
+                        }
+                        
+                        
                     </Col>
                 </Row>
             </Modal.Body>
