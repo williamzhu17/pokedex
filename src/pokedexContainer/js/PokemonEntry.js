@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import "../css/PokemonEntry.css";
 import { getPromise } from "../../getPromise";
 import PokemonEntryBox from "./PokemonEntryBox.js";
+import Card from "react-bootstrap/Card";
+import { capitalizeFirstLetter } from "../../capitalizeFirstLetter.js";
 
 function PokemonEntry(props) {
 
@@ -71,22 +73,21 @@ function PokemonEntry(props) {
     return (
         <>
             {loaded === true ? 
-                <div onClick={handleClick} >
-                        <p className="pokemonId">{pokemonData.id}</p>
-                        <p>{pokemonData.name}</p>
-                        <img src={pokemonData.iconLink} alt={"Picture of " + pokemonData.name} width="68" height="56" />
-                </div> : 
+                <Card onClick={handleClick}>
+                    <Card.Img src={pokemonData.iconLink} />
+                    <Card.Body>
+                        <Card.Title>
+                            {pokemonData.name}
+                            <span className="pokemonId">{pokemonData.id}</span>
+                        </Card.Title>
+                    </Card.Body>
+                </Card> : 
                 <span>Loading...</span>
             }
 
             <PokemonEntryBox clicked={clicked} handleClose={handleClose} data={pokemonData} />
         </>
     );
-
-    //Capitalizes first letter of a string
-    function capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    }
 }
 
 export default PokemonEntry;

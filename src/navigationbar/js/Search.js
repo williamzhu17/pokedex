@@ -4,50 +4,36 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import { capitalizeFirstLetter } from "../../capitalizeFirstLetter.js";
 
-function Search() {
+function Search(props) {
 
-    const [clicked, setClicked] = useState(false);
-
-    const [formResults, setFormResults] = useState({
-        "searchOption": "text", 
-        "searchInput": null
+    const [searchParameters, setSearchParameters] = useState({
+        "searchType": "name", 
+        "searchInput": "",
     });
 
-    function handleSearch() {
-        setClicked(true);
-    }
-
-    function handleClose() {
-        setClicked(false)
-    }
-
-    function handleSubmit() {
-        handleClose();
-    }
-
     function handleChange(event) {
-        if (event.target.type === "radio") {
-            setFormResults({
-                ...formResults, 
-                "searchOption": [event.target.id],
-            });
-        } 
         if (event.target.type === "text") {
-            setFormResults({
-                ...formResults, 
-                "searchInput": [event.target.value], 
+            setSearchParameters({
+                ...searchParameters, 
+                "searchInput": event.target.value,
+            });
+        }
+
+        if (event.target.type === "radio") {
+            setSearchParameters({
+                ...searchParameters, 
+                "searchType": event.target.value,
             });
         }
     }
 
     return(
         <>
-            <Button onClick={handleSearch}>Search</Button>
-
-            <Modal show={clicked} onHide={handleClose}>
+            <Modal show={props.searching} onHide={props.handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Search</Modal.Title>
+                    <Modal.Title>Search {capitalizeFirstLetter(searchParameters.searchType)}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
@@ -56,7 +42,11 @@ function Search() {
                                 <Form.Label>Search</Form.Label>
                             </Col>
                             <Col sm={8}>
-                                <Form.Control type="text" onChange={handleChange} />
+                                <Form.Control 
+                                    type="text" 
+                                    value={searchParameters.searchInput} 
+                                    onChange={handleChange} 
+                                />
                             </Col>
                         </Form.Group>
                         <Form.Group controlId="searchOptions" as={Row} onChange={handleChange}>
@@ -64,15 +54,29 @@ function Search() {
                                 <Form.Label>Search by...</Form.Label>
                             </Col>
                             <Col sm={8}>
-                                <Form.Check type="radio" label="Name" inline name="searchOptionRadio" id="nameSearchOption" value="text" defaultChecked />
-                                <Form.Check type="radio" label="Height" inline name="searchOptionRadio" id="heightSearchOption" value="number" />
-                                <Form.Check type="radio" label="Weight" inline name="searchOptionRadio" id="weightSearchOption" value="number" />
-                                <Form.Check type="radio" label="Pokedex Number" inline name="searchOptionRadio" id="numberSearchOption" value="number" />
+                                <Form.Check 
+                                    type="radio" 
+                                    label="Name" 
+                                    inline 
+                                    name="searchOptionRadio" 
+                                    id="nameSearchOption" 
+                                    value="name" 
+                                    checked={searchParameters.searchType === "name"} 
+                                />
+                                <Form.Check 
+                                    type="radio" 
+                                    label="Pokedex Number" 
+                                    inline 
+                                    name="searchOptionRadio" 
+                                    id="numberSearchOption" 
+                                    value="number"
+                                    checked={searchParameters.searchType === "number"}
+                                />
                             </Col>
                         </Form.Group>
                         <Form.Group as={Row}>
                             <Col sm={{span: 8, offset: 4}}>
-                                <Button onClick={handleSubmit}>Search</Button>
+                                <Button>Search</Button>
                             </Col>
                         </Form.Group>
                     </Form>
