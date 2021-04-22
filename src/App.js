@@ -3,12 +3,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import NavigationBar from "./navigationbar/js/NavigationBar.js";
 import PokedexContainer from "./pokedexContainer/js/PokedexContainer.js";
 import { getPromise } from "./getPromise";
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, createContext } from "react";
 import Spinner from "react-bootstrap/Spinner";
+
+export const SearchContext = createContext();
 
 function App() {
 
   const [pokemonData, setPokemonData] = useState(null);
+
+  const [searchParameters, setSearchParameters] = useState({
+    "searching": false,
+    "searchBoxOpen": false,
+    "searchType": "name", 
+    "searchInput": "",
+  });
 
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState();
@@ -33,13 +42,17 @@ function App() {
 
   return (
     <div className="App">
-      <NavigationBar />
-      {loaded === true ? 
-        <PokedexContainer data={pokemonData} colPerRow={6} /> : 
-        <Spinner animation="border" role="status">
-          <span className="sr-only">Loading...</span>
-        </Spinner>
-      }
+      <SearchContext.Provider value={{searchParameters, setSearchParameters}}>
+        <NavigationBar />
+
+        {loaded === true ? 
+          <PokedexContainer data={pokemonData} colPerRow={6} /> : 
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
+        }
+      </SearchContext.Provider>
+    
     </div>
   );
 }

@@ -1,52 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Search from "./Search.js";
 import Button from "react-bootstrap/Button";
+import { SearchContext } from "../../App.js";
 
 function NavigationBar() {
-
-    const [searchParameters, setSearchParameters] = useState({
-        "searching": false,
-        "searchBoxOpen": false,
-        "searchType": "name", 
-        "searchInput": "",
-    });
+    
+    const {searchParameters, setSearchParameters} = useContext(SearchContext);
 
     function openSearchBox() {
         setSearchParameters({
             ...searchParameters, 
             "searchBoxOpen": true,
-        });
-    }
-
-    function closeSearchBox() {
-        setSearchParameters({
-            ...searchParameters, 
-            "searchBoxOpen": false,
-        });
-    }
-
-    function handleChange(event) {
-        if (event.target.type === "text") {
-            setSearchParameters({
-                ...searchParameters, 
-                "searchInput": event.target.value,
-            });
-        }
-
-        if (event.target.type === "radio") {
-            setSearchParameters({
-                ...searchParameters, 
-                "searchType": event.target.value,
-            });
-        }
-    }
-
-    function onSubmit() {
-        setSearchParameters({
-            ...searchParameters, 
-            "searching": true,
-            "searchBoxOpen": false, 
         });
     }
 
@@ -67,7 +32,7 @@ function NavigationBar() {
                     <Button onClick={turnOffSearching} variant="danger">Stop Search</Button>}
             </Navbar>
 
-            <Search closeSearchBox={closeSearchBox} handleChange={handleChange} searchParameters={searchParameters} onSubmit={onSubmit} />
+            <Search />
         </>
     );
 }

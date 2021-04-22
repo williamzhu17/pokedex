@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import PokemonEntryRow from "./PokemonEntryRow.js";
+import { SearchContext } from "../../App.js";
 
 function PokedexContainer(props) {
+    
+    const {searchParameters, setSearchParameters} = useContext(SearchContext);
+
     let rows = [];
 
     function createRows(colPerRow) {
