@@ -2,6 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import NavigationBar from "./navigationbar/js/NavigationBar.js";
 import PokedexContainer from "./pokedexContainer/js/PokedexContainer.js";
+import SearchResults from "./pokedexContainer/js/SearchResults.js";
 import { getPromise } from "./getPromise";
 import React, {useEffect, useState, createContext } from "react";
 import Spinner from "react-bootstrap/Spinner";
@@ -46,7 +47,12 @@ function App() {
         <NavigationBar />
 
         {loaded === true ? 
-          <PokedexContainer data={pokemonData} colPerRow={6} /> : 
+          <>
+            {searchParameters.searching === false ? 
+              <PokedexContainer data={pokemonData} colPerRow={6} /> : 
+              <SearchResults data={pokemonData} colPerRow={6} />
+            }
+          </> : 
           <Spinner animation="border" role="status">
             <span className="sr-only">Loading...</span>
           </Spinner>

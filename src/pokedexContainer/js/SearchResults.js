@@ -1,12 +1,24 @@
 import React, { useContext } from "react";
 import PokemonEntryRow from "./PokemonEntryRow.js";
+import { SearchContext } from "../../App.js";
+import "../css/SearchResults.css";
 
-function PokedexContainer(props) {
+function SearchResults(props) {
+
+    const {searchParameters, setSearchParameters} = useContext(SearchContext);
 
     let rows = [];
 
     function createRows(colPerRow) {
         let pokemonInformation = props.data.results;
+
+        if (searchParameters.searchType === "name") {
+            pokemonInformation = pokemonInformation.filter(data => data.name.includes(searchParameters.searchInput));
+        }
+
+        if (searchParameters.searchType === "number") {
+            pokemonInformation = [pokemonInformation[parseInt(searchParameters.searchInput) - 1]];
+        }
 
         let rowNumber = Math.ceil((pokemonInformation.length) / colPerRow);
 
@@ -28,9 +40,10 @@ function PokedexContainer(props) {
     
     return (
         <>
+            <h3 className="searchResultsHeader">Search Results</h3>
             {rows}
         </>
     );
 }
 
-export default PokedexContainer;
+export default SearchResults;

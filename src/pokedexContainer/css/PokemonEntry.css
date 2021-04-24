@@ -1,3 +1,7 @@
 .pokemonId {
     float: right;
 }
+
+.pokemonIcon {
+    cursor: pointer;
+}

@@ -76,7 +76,7 @@ function PokemonEntry(props) {
     return (
         <>
             {loaded === true ? 
-                <Card onClick={handleClick}>
+                <Card onClick={handleClick} className="pokemonIcon">
                     <Card.Img src={pokemonData.iconLink} />
                     <Card.Body>
                         <Card.Title>
