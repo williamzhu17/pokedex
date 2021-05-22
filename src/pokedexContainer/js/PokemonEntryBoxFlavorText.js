@@ -6,11 +6,10 @@ function PokemonEntryBoxFlavorText(props) {
     const [pokemonFlavorText, setPokemonFlavorText] = useState();
 
     const [loaded, setLoaded] = useState(true);
-    const [error, setError] = useState();
 
     useEffect(() => {
         pokemonInformationAPICall("https://pokeapi.co/api/v2/pokemon-species/" + props.id);
-    }, []);
+    }, [props.id]);
 
     function pokemonInformationAPICall(URL) {
         let promise = getPromise(URL);
@@ -24,7 +23,6 @@ function PokemonEntryBoxFlavorText(props) {
         })
         .catch(error => {
             console.log(error);
-            setError(error);
         });
     }
 

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import Navbar from "react-bootstrap/Navbar";
 import Search from "./Search.js";
 import Button from "react-bootstrap/Button";

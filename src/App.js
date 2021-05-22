@@ -21,7 +21,6 @@ function App() {
   });
 
   const [loaded, setLoaded] = useState(false);
-  const [error, setError] = useState();
 
   useEffect(() => {
     pokemonInformationAPICall("https://pokeapi.co/api/v2/pokemon?limit=151");
@@ -37,7 +36,6 @@ function App() {
     })
     .catch(error => {
       console.log(error);
-      setError(error);
     });
   }
 

@@ -5,7 +5,7 @@ import "../css/SearchResults.css";
 
 function SearchResults(props) {
 
-    const {searchParameters, setSearchParameters} = useContext(SearchContext);
+    const {searchParameters} = useContext(SearchContext);
 
     let rows = [];
 

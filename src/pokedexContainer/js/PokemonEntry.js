@@ -24,16 +24,10 @@ function PokemonEntry(props) {
 
     //States to determine if loaded or not
     const [loaded, setLoaded] = useState(false);
-    const [error, setError] = useState();
 
     //Prompts makeAPICall function when mounted
     useEffect(() => {
-        makeAPICall(props.data.url);
-    }, []);
-
-    //Makes API Call
-    function makeAPICall(URL) {
-        let promise = getPromise(URL);
+        let promise = getPromise(props.data.url);
     
         promise.then(result => {
           return JSON.parse(result);
@@ -59,9 +53,8 @@ function PokemonEntry(props) {
         })
         .catch(error => {
           console.log(error);
-          setError(error);
         });
-      }
+    }, [props.data.url, pokemonData]);
 
       //Handles when user clicks on card
       function handleClick() {
