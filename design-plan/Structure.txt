@@ -1,0 +1,7 @@
+index.js
+    App.js
+        NavBar.js
+            SearchBar.js
+        PokedexContainer.js (contains all of the pokedex information; creates all the pokemon entry rows needed)
+            PokemonEntryRow.js (contains a row of pokemon entries; creates all of the pokemonentry components)
+                PokemonEntry.js (has information for the pokemon)
